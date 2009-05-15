@@ -1,0 +1,22 @@
+application: candersonmiller1984
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /
+  script: main.py
+- url: /post
+  script: main.py
+- url: /recieve
+  script: main.py
+- url: /img
+  script: main.py
+- url: /edit
+  script: main.py
+- url: /recieveedit
+  script: main.py
+- url: /rss
+  script: rss.py
+- url: /
+  static_dir: assets
