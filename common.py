@@ -93,4 +93,10 @@ class BlogPost(db.Model):
 	title = db.StringProperty()
 	content = db.TextProperty()
 	image = db.BlobProperty()
+	
+class SiteSettings(db.Model):
+	blogName = db.StringProperty()
+	blogSaying = db.StringProperty()
+	
+
 

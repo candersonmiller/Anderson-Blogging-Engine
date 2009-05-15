@@ -18,5 +18,9 @@ handlers:
   script: main.py
 - url: /rss
   script: rss.py
+- url: /settings
+  script: settings.py
+- url: /settingssubmit
+  script: settings.py
 - url: /
   static_dir: assets

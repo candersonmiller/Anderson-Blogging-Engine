@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><rss version="2.0">
+<channel>
+<title>blog.candersonmiller.com</title>
+<link>http://blog.candersonmiller.com/</link>
+<description>Anderson Miller&apos;s weblog, this is what I do every day</description>
+<language>en-us</language>
+<managingEditor>candersonmiller@gmail.com (Anderson Miller)</managingEditor>
+<copyright>http://creativecommons.org/licenses/by-sa/1.0</copyright>
+<lastBuildDate>Fri, 15 May 2009 14:04:56 EDT</lastBuildDate>
+
+<generator>http://www.movabletype.org/?v=3.2</generator>
+<webMaster>candersonmiller@gmail.com (Anderson Miller)</webMaster>
+<ttl>30</ttl>
+
+{{entries}}
+
+
+</channel>
+</rss>

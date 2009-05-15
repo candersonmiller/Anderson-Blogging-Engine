@@ -1,0 +1,8 @@
+<item>
+<title>{{title}}</title>
+<description>{{description}}</description>
+<link>{{link}}</link>
+<guid isPermaLink="true">{{link}}</guid>
+<pubDate>{{pubDate}}</pubDate>
+<author>candersonmiller@gmail.com</author>
+</item>

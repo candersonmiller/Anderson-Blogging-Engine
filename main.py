@@ -103,8 +103,22 @@ class MainHandler(webapp.RequestHandler):
 		self.response.headers['Content-Type'] = 'text/html'
 		posts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY date DESC")
 		
-		blogtitle = "Anderson Miller's Blog"
-		tagline = "I wrote this blog myself.  The Blog, not just the content."
+		settings = db.GqlQuery("SELECT * FROM SiteSettings")
+		blogtitle = ""
+		tagline = ""
+		i = 0
+		for setting in settings:
+			blogtitle = setting.blogName
+			tagline = setting.blogSaying
+			i += 1
+		
+		if( i == 0):
+			setting = common.SiteSettings()
+			setting.blogName = "placeholder"
+			setting.blogSaying = "placeholder"
+			setting.put()
+		#blogtitle = "Anderson Miller's Blog"
+		#tagline = "I wrote this blog myself.  The Blog, not just the content."
 		i = 0
 		blogposts = ""
 		for post in posts:
