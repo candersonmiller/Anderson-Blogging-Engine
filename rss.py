@@ -52,41 +52,6 @@ class RssFeed(webapp.RequestHandler):
 		
 		
 		self.response.out.write(template.render('atom.xml',{'entries':entries}))
-		#self.response.out.write("""<?xml version="1.0" encoding="utf-8"?><rss version="2.0">\n
-		#\t<channel>\n
-		#\t<link>http://blog.candersonmiller.com/</link>\n
-		#\t<description>Anderson Miller&apos;s blog.</description>\n
-		#\t<language>en-us</language>\n
-		#\t<managingEditor>candersonmiller@gmail.com (Anderson Miller)</managingEditor>\n
-		#\t<copyright>http://creativecommons.org/licenses/by-sa/1.0</copyright>\n
-		#\t\t<lastBuildDate>
-		#""")
-		
-		#self.response.out.write("""</lastBuildDate>\n
-
-		#\t\t<generator>http://www.movabletype.org/?v=3.2</generator>
-		#\t\t<webMaster>candersonmiller@gmail.com (Anderson Miller)</webMaster>
-		#\t\t<ttl>30</ttl>
-		#""")
-		#blogposts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY date DESC LIMIT 10")
-		#for blogpost in blogposts:
-		#	blogpost.date = blogpost.date - datetime.timedelta(hours=4)
-		#	self.response.out.write('\t\t\t<entry>\n')
-		#	content = cgi.escape(blogpost.content)
-		#	self.response.out.write('\t\t\t\t<title>%s</title>\n' % blogpost.title )
-		#	self.response.out.write('\t\t\t\t<description>%s <br/><img src="http://blog.candersonmiller.com/img?img_id=%s"></img></description>\n' % (content,blogpost.key()))
-		#	self.response.out.write('\t\t\t\t<link>http://blog.candersonmiller.com/posts/%s</link>\n' % blogpost.post_id)
-		#	self.response.out.write('\t\t\t\t<pubDate>%s -0500</pubDate>\n' % common.feedFormattedDate(foodevent.date))
-		#	self.response.out.write('\t\t\t\t<author>candersonmiller@gmail.com</author>\n')
-		#	self.response.out.write('\t\t\t</entry>\n')
-
-		#self.response.out.write("""
-		
-		#</channel>
-		#</rss>
-		#
-
-		#""")
 		
 
 def main():
