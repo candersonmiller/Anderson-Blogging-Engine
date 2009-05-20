@@ -22,5 +22,7 @@ handlers:
   script: settings.py
 - url: /settingssubmit
   script: settings.py
+- url: /postedit
+  script: postedit.py
 - url: /
   static_dir: assets

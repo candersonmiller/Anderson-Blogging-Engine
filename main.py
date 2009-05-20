@@ -138,20 +138,10 @@ class EditPost(webapp.RequestHandler):
 		postData = self.request.get('post')
 		if(postData):
 			postToEdit = int(postData)
-			self.response.out.write(postToEdit)
+			#self.response.out.write(postToEdit)
 			post = db.GqlQuery("SELECT * FROM BlogPost WHERE post_id=:1",postToEdit)
 			for pos in post:
-				self.response.out.write("""
-			      <html>
-			        <body>
-			          <form action="/recieveedit" enctype="multipart/form-data"  method="post">
-						<div><input name="post_id" value="%s"/></div>
-						<div><input type="text" name="title" rows="1" cols = "60" value="%s"></textarea></div>
-			            <div><input type="text" name="content" rows="20" cols="60" value="%s"></textarea></div>
-			            <div><input type="submit" value="Re- Post To Blog"></div>
-			          </form>
-			        </body>
-			      </html>""" % (postToEdit, pos.title, pos.content))
+				self.response.out.write(template.render('edit.html',{'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content}))
 		else:
 			posts = db.GqlQuery("SELECT * FROM BlogPost")
 			for post in posts:
