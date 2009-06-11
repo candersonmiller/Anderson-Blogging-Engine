@@ -24,6 +24,22 @@
      		});
  		});
 
+		function publish(){
+			$.ajax({
+			  type: "GET",
+			  url: "/publish?post_id={{postNumber}}",
+			  dataType: "script"
+			});
+		}
+		function unPublish(){
+			$.ajax({
+			  type: "GET",
+			  url: "/unpublish?post_id={{postNumber}}",
+			  dataType: "script"
+			});
+		}
+
+
 	 </script>
 	<style type="text/css">
 		h1 {
@@ -39,6 +55,8 @@
 	<strong>Entry Text</strong><br/>
 	<div class="entry" id="entry{{postNumber}}">{{content}}</div><br/>
 	{{image}}
+	<button id="publish" onclick="publish();">Publish</button> <button id="unpublish" onclick="unPublish()">Unpublish</button><br/>
+	
 	
 </body>
 </html>

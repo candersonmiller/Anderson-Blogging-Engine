@@ -93,6 +93,7 @@ class BlogPost(db.Model):
 	title = db.StringProperty()
 	content = db.TextProperty()
 	image = db.BlobProperty()
+	published = db.BooleanProperty(default=False)
 	
 class SiteSettings(db.Model):
 	blogName = db.StringProperty()

@@ -123,13 +123,14 @@ class MainHandler(webapp.RequestHandler):
 		blogposts = ""
 		for post in posts:
 			i = i + 1
-			title = post.title
-			postdate = feedFormattedDate(post.date)
-			img = ""
-			if(post.image):
-				img = "<div class=\"span-12 last\"><img src=\"/img?img_id=%s\"><br/></div>" % post.key()
-			body = post.content
-			blogposts += template.render('newpost.html',{'title':title,'postdate':postdate,'img':img,'body':body})
+			if(post.published):
+				title = post.title
+				postdate = feedFormattedDate(post.date)
+				img = ""
+				if(post.image):
+					img = "<div class=\"span-12 last\"><img src=\"/img?img_id=%s\"><br/></div>" % post.key()
+				body = post.content
+				blogposts += template.render('newpost.html',{'title':title,'postdate':postdate,'img':img,'body':body})
 			
 		self.response.out.write(template.render('frontpage.html',{'title': blogtitle,'tagline':tagline, 'postbody' : blogposts}))
 		
@@ -143,7 +144,7 @@ class EditPost(webapp.RequestHandler):
 			for pos in post:
 				self.response.out.write(template.render('edit.html',{'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content}))
 		else:
-			posts = db.GqlQuery("SELECT * FROM BlogPost")
+			posts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY post_id")
 			for post in posts:
 				self.response.out.write("Post %s: %s <a href=\"/edit?post=%s\">edit</a><br/>" % (post.post_id, post.title, post.post_id))
 		
@@ -157,7 +158,8 @@ class Post(webapp.RequestHandler):
 	          <form action="/recieve" enctype="multipart/form-data"  method="post">
 				<div><textarea name="title" rows="1" cols = "60"></textarea></div>
 	            <div><textarea name="content" rows="3" cols="60"></textarea></div>
-				<div><input type="file" name="img"/><</div>
+				<div><input type="file" name="img"/></div>
+				<div>Publish <input type="checkbox" name="publish" value="1"></div>
 	            <div><input type="submit" value="Post To Blog"></div>
 	          </form>
 	        </body>
@@ -177,8 +179,11 @@ class Recieve(webapp.RequestHandler):
 		post.content = self.request.get('content')
 		post.title = self.request.get('title')
 		image = self.request.get("img")
+		post.published = bool(self.request.get('publish'))
 		if(image):
 			post.image = db.Blob(image)
+		#if(publish):
+		#	post.published = True
 		post.put()
 		self.redirect('/')
 

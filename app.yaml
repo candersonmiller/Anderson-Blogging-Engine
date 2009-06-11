@@ -24,5 +24,9 @@ handlers:
   script: settings.py
 - url: /postedit
   script: postedit.py
+- url: /publish
+  script: publish.py
+- url: /unpublish
+  script: publish.py
 - url: /
   static_dir: assets
