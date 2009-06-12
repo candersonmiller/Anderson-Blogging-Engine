@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><rss version="2.0">
 <channel>
-<title>blog.candersonmiller.com</title>
+<title>{{blogtitle}}</title>
 <link>http://blog.candersonmiller.com/</link>
-<description>Anderson Miller&apos;s weblog, this is what I do every day</description>
+<description>{{tagline}}</description>
 <language>en-us</language>
 <managingEditor>candersonmiller@gmail.com (Anderson Miller)</managingEditor>
 <copyright>http://creativecommons.org/licenses/by-sa/1.0</copyright>
