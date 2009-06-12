@@ -27,16 +27,27 @@ class Settings(webapp.RequestHandler):
 		settings = db.GqlQuery("SELECT * FROM SiteSettings")
 		blogName = ""
 		blogSaying = ""
+		siteHome = ""
+		author = ""
 		i = 0
 		for setting in settings:
 			blogName = setting.blogName
 			blogSaying = setting.blogSaying
+			siteHome = setting.siteHome
+			author = setting.author
 			#self.response.out.write("counts!")
 			if(i == 1):
 				setting.delete()
-			i += 1
+			i += 1	
+		
+		template_values = {
+			'blogName' : blogName,
+			'blogSaying' : blogSaying,
+			'siteHome': siteHome,
+			'author': author
+		}
 			
-		self.response.out.write(template.render('settings.html',{ 'blogName' : blogName,'blogSaying' : blogSaying }))
+		self.response.out.write(template.render('settings.html',template_values))
 			
 class SubmitSettings(webapp.RequestHandler):
 	def post(self):
@@ -46,11 +57,19 @@ class SubmitSettings(webapp.RequestHandler):
 		#self.response.out.write(input_id)
 		blogName = ""
 		blogSaying = ""
+		siteHome = ""
+		author = ""
 		if(input_id == "blogName"):
 			blogName = self.request.get("value")
 			
 		if(input_id == "blogSaying"):
 			blogSaying = self.request.get("value")
+		
+		if(input_id) == "siteHome":
+			siteHome = self.request.get("value")
+			
+		if(input_id) == "author":
+			author = self.request.get("value")
 		
 		if(blogName):
 			self.response.out.write("%s" % blogName)
@@ -73,6 +92,31 @@ class SubmitSettings(webapp.RequestHandler):
 					setting.delete()
 				else:
 					setting.blogSaying = blogSaying
+					setting.put()
+				i = i + 1
+				
+		if(siteHome):
+			self.response.out.write("%s" % siteHome)
+			settings = db.GqlQuery("SELECT * FROM SiteSettings")
+			i = 0
+			for setting in settings:
+				if i > 0:
+					setting.delete()
+				else:
+					setting.siteHome = siteHome
+					setting.put()
+				i = i + 1
+				
+		
+		if(author):
+			self.response.out.write("%s" % author)
+			settings = db.GqlQuery("SELECT * FROM SiteSettings")
+			i = 0
+			for setting in settings:
+				if i > 0:
+					setting.delete()
+				else:
+					setting.author = author
 					setting.put()
 				i = i + 1
 

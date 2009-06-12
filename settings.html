@@ -22,6 +22,17 @@
          		tooltip   : 'Click to edit...',
 		 		submit : "OK"
      		});
+			
+			$('.siteHome').editable('/settingssubmit', {
+         		indicator : 'Saving...',
+         		tooltip   : 'Click to edit...',
+		 		submit : "OK"
+     		});
+			$('.author').editable('/settingssubmit', {
+         		indicator : 'Saving...',
+         		tooltip   : 'Click to edit...',
+		 		submit : "OK"
+     		});
  		});
 
 	 </script>
@@ -38,6 +49,9 @@
 	<div class="blogName" id="blogName">{{blogName}}</div><br/>
 	<strong>Blog Saying</strong><br/>
 	<div class="blogSaying" id="blogSaying">{{blogSaying}}</div><br/>
-	
+	<strong>Site Home</strong><br/>
+	<div class="siteHome" id="siteHome">{{siteHome}}</div><br/>
+	<strong>Author Name</strong><br/>
+	<div class="author" id="author">{{author}}</div><br/>	
 </body>
 </html>

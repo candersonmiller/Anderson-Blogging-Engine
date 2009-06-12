@@ -47,22 +47,25 @@ class RssFeed(webapp.RequestHandler):
 		settings = db.GqlQuery("SELECT * FROM SiteSettings")
 		blogtitle = ""
 		tagline = ""
+		author = ""
 		i = 0
 		for setting in settings:
 			blogtitle = setting.blogName
 			tagline = setting.blogSaying
+			author = setting.author
 			i += 1
 		
 		if( i == 0):
 			setting = common.SiteSettings()
 			setting.blogName = "placeholder"
 			setting.blogSaying = "placeholder"
+			setting.author = "Some guy"
 			setting.put()
 		
 		blogposts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY date")
 		entries = ""
 		for blogpost in blogposts:
-			entries += template.render('newRssEntry.xml',{'title': blogpost.title, 'description': blogpost.content, 'link' : "http://blog.candersonmiller.com/post/%d" % blogpost.post_id, 'pubDate' : getPubDateFromDBDate(blogpost.date)})
+			entries += template.render('newRssEntry.xml',{'title': blogpost.title, 'description': blogpost.content, 'link' : "http://blog.candersonmiller.com/post/%d" % blogpost.post_id, 'pubDate' : getPubDateFromDBDate(blogpost.date), 'author' : author})
 		
 		
 		self.response.out.write(template.render('atom.xml',{'blogtitle': blogtitle, 'tagline' : tagline, 'entries':entries}))

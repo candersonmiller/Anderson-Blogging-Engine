@@ -45,7 +45,7 @@ def feedFormattedDate(dateToFormat):
 	zeroDay = ""
 	if(dateToFormat.day < 10):
 		zeroDay = "0"
-	ohhai = ("%s, %s %s%s, %s at %s%s:%s%s:%s%s <strong>Anderson</strong> wrote:" % (day(dateToFormat.isoweekday() - 1),month(dateToFormat.month),zeroDay,dateToFormat.day,dateToFormat.year,zeroHour,dateToFormat.hour,zeroMinute,dateToFormat.minute,zeroSecond,dateToFormat.second))
+	ohhai = ("%s, %s %s%s, %s at %s%s:%s%s:%s%s" % (day(dateToFormat.isoweekday() - 1),month(dateToFormat.month),zeroDay,dateToFormat.day,dateToFormat.year,zeroHour,dateToFormat.hour,zeroMinute,dateToFormat.minute,zeroSecond,dateToFormat.second))
 	return ohhai
 
 
@@ -106,16 +106,22 @@ class MainHandler(webapp.RequestHandler):
 		settings = db.GqlQuery("SELECT * FROM SiteSettings")
 		blogtitle = ""
 		tagline = ""
+		author = ""
+		siteHome = ""
 		i = 0
 		for setting in settings:
 			blogtitle = setting.blogName
 			tagline = setting.blogSaying
+			author = setting.author
+			siteHome = setting.siteHome
 			i += 1
 		
 		if( i == 0):
 			setting = common.SiteSettings()
 			setting.blogName = "placeholder"
 			setting.blogSaying = "placeholder"
+			setting.author = "placeholder"
+			setting.siteHome = "http://www.candersonmiller.com/"
 			setting.put()
 		#blogtitle = "Anderson Miller's Blog"
 		#tagline = "I wrote this blog myself.  The Blog, not just the content."
@@ -126,13 +132,27 @@ class MainHandler(webapp.RequestHandler):
 			if(post.published):
 				title = post.title
 				postdate = feedFormattedDate(post.date)
+				postdate += " <strong>%s</strong> wrote:" % author
 				img = ""
 				if(post.image):
 					img = "<div class=\"span-12 last\"><img src=\"/img?img_id=%s\"><br/></div>" % post.key()
 				body = textile.textile(post.content)
-				blogposts += template.render('newpost.html',{'title':title,'postdate':postdate,'img':img,'body':body})
-			
-		self.response.out.write(template.render('frontpage.html',{'title': blogtitle,'tagline':tagline, 'postbody' : blogposts}))
+				template_values = {
+					'title':title,
+					'postdate':postdate,
+					'img':img,
+					'body':body
+				}
+				blogposts += template.render('newpost.html',template_values)
+		
+		
+		template_values = {
+			'title': blogtitle,
+			'tagline':tagline, 
+			'postbody' : blogposts,
+			'website' : siteHome
+		}
+		self.response.out.write(template.render('frontpage.html',template_values))
 		
 class EditPost(webapp.RequestHandler):
 	def get(self):

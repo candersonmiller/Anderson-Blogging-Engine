@@ -98,6 +98,8 @@ class BlogPost(db.Model):
 class SiteSettings(db.Model):
 	blogName = db.StringProperty()
 	blogSaying = db.StringProperty()
+	siteHome = db.StringProperty()
+	author = db.StringProperty()
 	
 
 

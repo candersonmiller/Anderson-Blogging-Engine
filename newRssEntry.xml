@@ -4,5 +4,5 @@
 <link>{{link}}</link>
 <guid isPermaLink="true">{{link}}</guid>
 <pubDate>{{pubDate}}</pubDate>
-<author>candersonmiller@gmail.com</author>
+<author>{{author}}</author>
 </item>
