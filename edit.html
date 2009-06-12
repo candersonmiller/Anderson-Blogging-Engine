@@ -7,22 +7,48 @@
 	<title>Edit Post {{postNumber}}	</title>
 	<meta name="generator" content="TextMate http://macromates.com/">
 	<meta name="author" content="C. Anderson Miller">
+	<!-- Framework CSS -->
+  <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection">
+  <link rel="stylesheet" href="/css/print.css" type="text/css" media="print">
+  <!--[if IE]><link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen, projection"><![endif]-->
 	<script src="/js/jquery-1.3.1.min.js"></script>
 	<script src="/js/jquery.jeditable.js"></script>
+	<script src="/js/jquery.autogrow.js"></script>
+	<script src="/js/jquery.jeditable.autogrow.js"></script>
+	
 	<script type="text/javascript">
  		$(document).ready(function() {
-     		$('.title').editable('/postedit', {
+	
+     		$('#title{{postNumber}}').editable('/postedit', {
          		indicator : 'Saving...',
          		tooltip   : 'Click to edit...',
 		 		submit : "OK"
      		});
 
-     		$('.entry').editable('/postedit', {
+     		$("#entry{{postNumber}}").editable("/postedit", {
+				type      : "autogrow",
          		indicator : 'Saving...',
          		tooltip   : 'Click to edit...',
-		 		submit : "OK"
+		 		submit : "OK",
+				cancel : 'cancel',
+				onblur : "ignore",
+				callback: function(value, settings){
+					renderTextileContent();
+				},
+				autogrow : {
+					lineHeight : 16,
+					maxHeight : 512
+				}
      		});
+
+		   $("#rendercontent").click(function(){
+		     renderTextileContent();
+		   });
  		});
+
+		function renderTextileContent(){
+			$("#renderedContent").load("/rendered?post_id={{postNumber}}");
+		}
 
 		function publish(){
 			$.ajax({
@@ -40,23 +66,48 @@
 		}
 
 
+
 	 </script>
 	<style type="text/css">
-		h1 {
+	textarea {
+		line-height: 16px;
+	}
+
+	#sidebar {
+	  width: 0px;
+	}
+
+	#content {
+	  width: 770px;
+	}
+
+	div.entry {
+	  width: 385px;
+	  float: left;
+	}
+	
+	/*	h1 {
 		 	text-align: center;
-		}
+		}*/
 	</style>
 	<!-- Date: 2009-03-29 -->
 </head>
 <body>
-	<h1>Edit Post Number {{postNumber}}</h1>
-	<strong>Entry Title</strong><br/>
-	<div class="title" id="title{{postNumber}}">{{title}}</div><br/>
-	<strong>Entry Text</strong><br/>
-	<div class="entry" id="entry{{postNumber}}">{{content}}</div><br/>
-	{{image}}
-	<button id="publish" onclick="publish();">Publish</button> <button id="unpublish" onclick="unPublish()">Unpublish</button><br/>
-	
-	
+	<div class="container"> 
+		<h1>Edit Post Number {{postNumber}}</h1>
+		<hr class="space">
+		<strong>Entry Title</strong><br/>
+		<div class="title" id="title{{postNumber}}">{{title}}</div>
+		<hr class="space">
+		<div class="span-8"><strong>Entry Text</strong></div><div class="span-8 last"><strong>Textile Rendered Entry</strong></div><br/>
+		<div class="span-8" id="entry{{postNumber}}">{{content}}</div><div class="span-8 last" id="renderedContent">{{renderedcontent}}</div>
+		<hr class="space">
+		<!--<button id="rendercontent">Render Textile Content</button> -->
+		<!--<hr class="space">-->
+		{{image}}
+		<hr class="space">
+		<button id="publish" onclick="publish();">Publish</button> 
+		<button id="unpublish" onclick="unPublish()">Unpublish</button>
+	</div>
 </body>
 </html>

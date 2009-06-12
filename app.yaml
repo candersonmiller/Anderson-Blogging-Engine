@@ -28,5 +28,7 @@ handlers:
   script: publish.py
 - url: /unpublish
   script: publish.py
+- url: /rendered
+  script: rendered.py
 - url: /
   static_dir: assets

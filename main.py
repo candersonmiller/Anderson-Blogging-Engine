@@ -24,7 +24,7 @@ import cgi
 import datetime
 
 import common
-
+import textile
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp import template
@@ -129,7 +129,7 @@ class MainHandler(webapp.RequestHandler):
 				img = ""
 				if(post.image):
 					img = "<div class=\"span-12 last\"><img src=\"/img?img_id=%s\"><br/></div>" % post.key()
-				body = post.content
+				body = textile.textile(post.content)
 				blogposts += template.render('newpost.html',{'title':title,'postdate':postdate,'img':img,'body':body})
 			
 		self.response.out.write(template.render('frontpage.html',{'title': blogtitle,'tagline':tagline, 'postbody' : blogposts}))
@@ -142,7 +142,7 @@ class EditPost(webapp.RequestHandler):
 			#self.response.out.write(postToEdit)
 			post = db.GqlQuery("SELECT * FROM BlogPost WHERE post_id=:1",postToEdit)
 			for pos in post:
-				self.response.out.write(template.render('edit.html',{'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content}))
+				self.response.out.write(template.render('edit.html',{'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content , 'renderedcontent' : textile.textile(pos.content)}))
 		else:
 			posts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY post_id")
 			for post in posts:
