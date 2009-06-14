@@ -95,6 +95,14 @@ class BlogPost(db.Model):
 	image = db.BlobProperty()
 	published = db.BooleanProperty(default=False)
 	
+class ImagePost(db.Model):
+	post_id = db.IntegerProperty()
+	image_id = db.IntegerProperty()
+	image = db.BlobProperty()
+	thumbnail = db.BlobProperty()
+	published = db.BooleanProperty(default=True)
+	title = db.StringProperty(default="Image")
+	
 class SiteSettings(db.Model):
 	blogName = db.StringProperty()
 	blogSaying = db.StringProperty()

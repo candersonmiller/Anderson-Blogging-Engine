@@ -25,6 +25,7 @@ import datetime
 
 import common
 import textile
+import gallery
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp import template
@@ -137,6 +138,9 @@ class MainHandler(webapp.RequestHandler):
 				if(post.image):
 					img = "<div class=\"span-12 last\"><img src=\"/img?img_id=%s\"><br/></div>" % post.key()
 				body = textile.textile(post.content)
+				galleryCode = gallery.Gallery()
+				galleryCode.constructGallery(post.post_id,False)
+				body += galleryCode.render()
 				template_values = {
 					'title':title,
 					'postdate':postdate,
@@ -162,7 +166,10 @@ class EditPost(webapp.RequestHandler):
 			#self.response.out.write(postToEdit)
 			post = db.GqlQuery("SELECT * FROM BlogPost WHERE post_id=:1",postToEdit)
 			for pos in post:
-				self.response.out.write(template.render('edit.html',{'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content , 'renderedcontent' : textile.textile(pos.content)}))
+				galleryCode = gallery.Gallery()
+				galleryCode.constructGallery(pos.post_id,True)
+				self.response.out.write(template.render('edit.html',{'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content ,'gallery_code' : galleryCode.render(), 'renderedcontent' : textile.textile(pos.content)}))
+
 		else:
 			posts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY post_id")
 			for post in posts:
@@ -205,7 +212,7 @@ class Recieve(webapp.RequestHandler):
 		#if(publish):
 		#	post.published = True
 		post.put()
-		self.redirect('/')
+		self.redirect('/edit')
 
 class TakeEdit(webapp.RequestHandler):
 	def post(self):
@@ -216,18 +223,10 @@ class TakeEdit(webapp.RequestHandler):
 			pos.title = self.request.get('title')
 			pos.put()
 		self.redirect('/')
-		
-class Image (webapp.RequestHandler):
-	def get(self):
-		blogPost = db.get(self.request.get("img_id"))
-		if blogPost.image:
-			self.response.headers['Content-Type'] = "image/png"
-			self.response.out.write(blogPost.image)
-		else:
-			self.error(404)
+
 
 def main():
-	application = webapp.WSGIApplication([('/', MainHandler),('/post',Post),('/recieve',Recieve),('/img', Image),('/edit',EditPost),('/recieveedit',TakeEdit)],
+	application = webapp.WSGIApplication([('/', MainHandler),('/post',Post),('/recieve',Recieve),('/edit',EditPost),('/recieveedit',TakeEdit)],
                                        debug=True)
 	run_wsgi_app(application)
 

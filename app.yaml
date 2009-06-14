@@ -11,7 +11,7 @@ handlers:
 - url: /recieve
   script: main.py
 - url: /img
-  script: main.py
+  script: image.py
 - url: /edit
   script: main.py
 - url: /recieveedit
@@ -30,5 +30,13 @@ handlers:
   script: publish.py
 - url: /rendered
   script: rendered.py
+- url: /test
+  script: test.py
+- url: /fullimage
+  script: image.py
+- url: /thumbnail
+  script: image.py
+- url: /postimage
+  script: image.py
 - url: /
   static_dir: assets
