@@ -46,56 +46,8 @@ def feedFormattedDate(dateToFormat):
 	zeroDay = ""
 	if(dateToFormat.day < 10):
 		zeroDay = "0"
-	ohhai = ("%s, %s %s%s, %s at %s%s:%s%s:%s%s" % (day(dateToFormat.isoweekday() - 1),month(dateToFormat.month),zeroDay,dateToFormat.day,dateToFormat.year,zeroHour,dateToFormat.hour,zeroMinute,dateToFormat.minute,zeroSecond,dateToFormat.second))
+	ohhai = ("%s, %s %s%s, %s at %s%s:%s%s:%s%s" % (common.day(dateToFormat.isoweekday() - 1),common.month(dateToFormat.month),zeroDay,dateToFormat.day,dateToFormat.year,zeroHour,dateToFormat.hour,zeroMinute,dateToFormat.minute,zeroSecond,dateToFormat.second))
 	return ohhai
-
-
-def month(num):
-	if(num == 1):
-		return "Jan"
-	if(num == 2):
-		return "Feb"
-	if(num == 3):
-		return "Mar"
-	if(num == 4):
-		return "Apr"
-	if(num == 5):
-		return "May"
-	if(num == 6):
-		return "Jun"
-	if(num == 7):
-		return "Jul"
-	if(num == 8):
-		return "Aug"
-	if(num == 9):
-		return "Sep"
-	if(num == 10):
-		return "Oct"
-	if(num == 11):
-		return "Nov"
-	if(num == 12):
-		return "Dec"
-
-
-def day(num):
-	if(num == 0):
-		return "Mon"
-	if(num == 1):
-		return "Tue"
-	if(num == 2):
-		return "Wed"
-	if(num == 3):
-		return "Thu"
-	if(num == 4):
-		return "Fri"
-	if(num == 5):
-		return "Sat"
-	if(num == 6):
-		return "Sun"
-
-
-
-
 
 
 
