@@ -31,25 +31,6 @@ from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-def feedFormattedDate(dateToFormat):
-	##Mon, 02 Jun 2008 10:32:32 EDT
-	dateToFormat = dateToFormat - datetime.timedelta(hours=4)  # for eastern standard time
-	zeroMinute = ""
-	if(dateToFormat.minute < 10):
-		zeroMinute = "0"
-	zeroHour = ""
-	if(dateToFormat.hour < 10):
-		zeroHour = "0"
-	zeroSecond = ""
-	if(dateToFormat.second < 10):
-		zeroSecond = "0"
-	zeroDay = ""
-	if(dateToFormat.day < 10):
-		zeroDay = "0"
-	ohhai = ("%s, %s %s%s, %s at %s%s:%s%s:%s%s" % (common.day(dateToFormat.isoweekday() - 1),common.month(dateToFormat.month),zeroDay,dateToFormat.day,dateToFormat.year,zeroHour,dateToFormat.hour,zeroMinute,dateToFormat.minute,zeroSecond,dateToFormat.second))
-	return ohhai
-
-
 
 class MainHandler(webapp.RequestHandler):
 	def get(self):
@@ -84,7 +65,7 @@ class MainHandler(webapp.RequestHandler):
 			i = i + 1
 			if(post.published):
 				title = post.title
-				postdate = feedFormattedDate(post.date)
+				postdate = common.feedFormattedDate(post.date)
 				postdate += " <strong>%s</strong> wrote:" % author
 				img = ""
 				if(post.image):

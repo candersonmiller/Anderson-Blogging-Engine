@@ -27,6 +27,7 @@ from google.appengine.api import urlfetch
 
 def feedFormattedDate(dateToFormat):
 	##Mon, 02 Jun 2008 10:32:32 EDT
+	dateToFormat = dateToFormat - datetime.timedelta(hours=4)  # for eastern standard time
 	zeroMinute = ""
 	if(dateToFormat.minute < 10):
 		zeroMinute = "0"
@@ -39,9 +40,8 @@ def feedFormattedDate(dateToFormat):
 	zeroDay = ""
 	if(dateToFormat.day < 10):
 		zeroDay = "0"
-	ohhai = ("%s, %s%s %s %s %s%s:%s%s:%s%s" % (day(dateToFormat.isoweekday() - 1),zeroDay,dateToFormat.day,month(dateToFormat.month),dateToFormat.year,zeroHour,dateToFormat.hour,zeroMinute,dateToFormat.minute,zeroSecond,dateToFormat.second))
+	ohhai = ("%s, %s %s%s, %s at %s%s:%s%s:%s%s" % (day(dateToFormat.isoweekday() - 1),month(dateToFormat.month),zeroDay,dateToFormat.day,dateToFormat.year,zeroHour,dateToFormat.hour,zeroMinute,dateToFormat.minute,zeroSecond,dateToFormat.second))
 	return ohhai
-
 
 def month(num):
 	months = {
