@@ -72,7 +72,7 @@ class MainHandler(webapp.RequestHandler):
 					img = "<div class=\"span-12 last\"><img src=\"/img?img_id=%s\"><br/></div>" % post.key()
 				body = textile.textile(post.content)
 				galleryCode = gallery.Gallery()
-				galleryCode.constructGallery(post.post_id,False)
+				galleryCode.constructGallery(post.post_id,False,False)
 				body += galleryCode.render()
 				template_values = {
 					'title':title,
@@ -100,8 +100,16 @@ class EditPost(webapp.RequestHandler):
 			post = db.GqlQuery("SELECT * FROM BlogPost WHERE post_id=:1",postToEdit)
 			for pos in post:
 				galleryCode = gallery.Gallery()
-				galleryCode.constructGallery(pos.post_id,True)
-				self.response.out.write(template.render('edit.html',{'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content ,'gallery_code' : galleryCode.render(), 'renderedcontent' : textile.textile(pos.content)}))
+				galleryCode.constructGallery(pos.post_id,False,True)
+				published = ""
+				unpublished = ""
+				if(pos.published):
+					published = "Published"
+					unpublished = ""
+				else:
+					published = ""
+					unpublished = "Not Published"
+				self.response.out.write(template.render('edit.html',{'published':published,'unpublished':unpublished,'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content ,'gallery_code' : galleryCode.render(), 'renderedcontent' : textile.textile(pos.content)}))
 
 		else:
 			posts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY post_id")

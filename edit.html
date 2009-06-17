@@ -61,6 +61,10 @@
 			  url: "/publish?post_id={{postNumber}}",
 			  dataType: "script"
 			});
+			
+
+			$('#published').text("Published");
+			$('#unpublished').text("");
 		}
 		function unPublish(){
 			$.ajax({
@@ -68,6 +72,8 @@
 			  url: "/unpublish?post_id={{postNumber}}",
 			  dataType: "script"
 			});
+			$('#published').text("");
+			$('#unpublished').text("Not Published");
 		}
 
 
@@ -85,7 +91,22 @@
 	#content {
 	  width: 770px;
 	}
-
+	
+	#published{
+		color: white;
+		font-style: bold;
+		font-size: 18pt;
+		background: #00F600;
+		text-align: center;
+	}
+	
+	#unpublished{
+		font-size: 18pt;
+		font-style: bold;
+		color: white;
+		background: red;
+		text-align: center;
+	}
 	div.entry {
 	  width: 385px;
 	  float: left;
@@ -99,13 +120,13 @@
 </head>
 <body>
 	<div class="container"> 
-		<h1>Edit Post Number {{postNumber}}</h1>
+		<div class="span-16"><h1>Edit Post Number {{postNumber}}</h1></div><div class="span-6 colborder" onclick="unPublish();" id="published">{{published}}</div><div  onclick="publish();" class="span-6 colborder" id="unpublished">{{unpublished}}</div>
 		<hr class="space">
 		<strong>Entry Title</strong><br/>
 		<div class="title" id="title{{postNumber}}">{{title}}</div>
 		<hr class="space">
 
-		<div class="span-8"><strong>Entry Text</strong> (click on entry to edit)</div><div class="span-8"><strong>Textile Rendered Entry</strong></div><div class="span-8 last"><strong>Pictures</strong></div>
+		<div class="span-8"><strong>Entry Text</strong> (click on entry to edit)</div><div class="span-8"><strong>Textile Rendered Entry</strong></div><div class="span-8 last"><strong>Pictures</strong> (click and drag to sort)</div>
 
 		<hr>
 		<div class="span-8" id="entry{{postNumber}}">{{content}}</div><div class="span-8" id="renderedContent">{{renderedcontent}}</div><div class="span-8 last"><form id="upload" enctype="multipart/form-data" action="/postimage?post_id={{postNumber}}" method="post">

@@ -20,14 +20,15 @@ class Gallery():
 		print "oh hai!"
 
 	def __init__(self):
-		self.renderOutput = ""
+		self.renderOutput = list()
 		
 	#
 	#
 	#	post_id = the post that the images in the gallery are associated with
 	#   fromScratch = boolean variable - meaning are the jquery, jqueryui, lightbox, lightbox css invoked already or not
-	#	
-	def constructGallery(self,post_id,fromScratch):
+	#	forEditing = boolean variable - says whether it's being constructed for editing (sortable) or viewing (lightbox)
+	#   
+	def constructGallery(self,post_id,fromScratch,forEditing):
 		javascriptCssInvoke = """
 			<script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAA-xDrjSBaHCs5B0t85D904xRq4LgvBueVH8RF3cRGkvic6WQ2NxQXZ_rzqp1XfgsrmFzFNIaWDHF5hQ"></script>
 			<script type="text/javascript">
@@ -43,16 +44,36 @@ class Gallery():
 					$('#gallery_%d a').lightBox({fixedNavigation:true});
 				});
 			</script>
-		""" % post_id
+		""" % (post_id)
 		if(fromScratch):
-			self.renderOutput += javascriptCssInvoke
-		self.renderOutput += javascriptForGallery
-		self.renderOutput += "<div id=\"gallery_%d\">\n" % post_id
+			self.renderOutput.append(javascriptCssInvoke)
+		
+		if(not forEditing): #assume it's for a gallery
+			self.renderOutput.append(javascriptForGallery)
+		else:
+			self.renderOutput.append("""
+					<script type="text/javascript">
+						$(function() {
+							$("#gallery_%d").sortable();
+							$("#gallery_%d").disableSelection();
+							$('.selector').sortable({
+							   sort: function(event, ui) {
+									alert("done sorting");
+								}
+							});
+						});
+
+					</script>			
+			""" % (post_id,post_id))
+		self.renderOutput.append("<div id=\"gallery_%d\">\n" % post_id)
 		imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
 		for imagePost in imagePosts:
-			self.renderOutput += "<a href=\"/fullimage?img_id=%s\" title=\"%s\"><img src=\"/thumbnail?img_id=%s\"/></a>" %  (imagePost.key(),imagePost.title,imagePost.key())
-			#<a href="largeImage" title="ImageTitle"><img src="smallImage"/></a>
-		self.renderOutput += "</div>\n"
+			if(forEditing):
+				self.renderOutput.append("<img id=\"%d\" src=\"/thumbnail?img_id=%s\"/>" %  (imagePost.image_id,imagePost.key()))
+			else:
+				self.renderOutput.append("<a href=\"/fullimage?img_id=%s\" title=\"%s\"><img src=\"/thumbnail?img_id=%s\"/></a>" %  (imagePost.key(),imagePost.title,imagePost.key()))
+				
+		self.renderOutput.append("</div>\n")
 
 	
 	def gallerySpecificJsCss(self):
@@ -61,4 +82,7 @@ class Gallery():
 		<link rel="stylesheet" type="text/css" href="/css/jquery.lightbox-0.5.css" media="screen" />
 		"""
 	def render(self):
-		return self.renderOutput
+		emptyString = ""
+		for item in self.renderOutput:
+			emptyString += item
+		return emptyString
