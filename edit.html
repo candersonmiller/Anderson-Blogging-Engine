@@ -120,10 +120,11 @@
 </head>
 <body>
 	<div class="container"> 
-		<div class="span-16"><h1>Edit Post Number {{postNumber}}</h1></div><div class="span-6 colborder" onclick="unPublish();" id="published">{{published}}</div><div  onclick="publish();" class="span-6 colborder" id="unpublished">{{unpublished}}</div>
+		<div class="span-16"><h1>Edit Post Number {{postNumber}}</h1></div><div class="span-6 colborder" onclick="unPublish();" id="published">{{published}}</div><div  onclick="publish();" class="span-6 colborder last" id="unpublished">{{unpublished}}</div>
+		<div class="span-12"><a href="/">Frontpage</a> | <a href="/edit">Edit All</a></div>
 		<hr class="space">
 		<strong>Entry Title</strong><br/>
-		<div class="title" id="title{{postNumber}}">{{title}}</div>
+		<div class="span-6"><div class="title" id="title{{postNumber}}">{{title}}</div></div>
 		<hr class="space">
 
 		<div class="span-8"><strong>Entry Text</strong> (click on entry to edit)</div><div class="span-8"><strong>Textile Rendered Entry</strong></div><div class="span-8 last"><strong>Pictures</strong> (click and drag to sort)</div>
@@ -159,9 +160,9 @@
 
 		<!--<button id="rendercontent">Render Textile Content</button> -->
 		<!--<hr class="space">-->
-		<hr>
+		<!--<hr>
 		<button id="publish" onclick="publish();">Publish</button> 
-		<button id="unpublish" onclick="unPublish()">Unpublish</button>
+		<button id="unpublish" onclick="unPublish()">Unpublish</button>-->
 	</div>
 </body>
 </html>

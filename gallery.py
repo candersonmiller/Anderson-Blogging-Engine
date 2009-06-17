@@ -54,17 +54,58 @@ class Gallery():
 			self.renderOutput.append("""
 					<script type="text/javascript">
 						$(function() {
-							$("#gallery_%d").sortable();
-							$("#gallery_%d").disableSelection();
-							$('.selector').sortable({
-							   sort: function(event, ui) {
-									alert("done sorting");
+							$("#gallery_%d").sortable({
+							   stop: function(event, ui) {
+									//console.log(ui.item[0].previousElementSibling.id);
+									//console.log(ui.item[0].nextElementSibling.id);
+									//console.log(ui.item[0].id); //this is the item that was moved
+									//console.log(ui.item[0].previousElementSibling);
+									
+									var prevElement;
+									if( ui.item[0].previousElementSibling == null ){
+										prevElement = -1;
+									}else{
+										prevElement = ui.item[0].previousElementSibling.id;
+									}
+									
+									var nextElement;
+									if( ui.item[0].nextElementSibling == null ){
+										nextElement = -1;
+									}else{
+										nextElement = ui.item[0].nextElementSibling.id;
+									}
+									
+									var thisElement = ui.item[0].id;
+
+									
+									
+									
+									if( prevElement == [null]){
+										prevElement = -1;
+									}
+									if( nextElement == [null]){
+										nextElement = -1;
+									}
+									
+									$.ajax({
+									  type: "GET",
+									  url: "/sortimages/%d/" + thisElement + "/" + prevElement + "/" + nextElement ,
+									  dataType: "script"
+									});
+									
+									// this guy sends out a message of sortimages/postNumber/thisElement/previousElement/nextElement
+									// previousElement or nextElement are -1 if they don't exist
+									// to do: write a refresh into this specific div
+									// something like this
+									//$("#renderedContent").load("/rendered?post_id={{postNumber}}?gallery=1");
 								}
 							});
+							$("#gallery_%d").disableSelection();
+
 						});
 
 					</script>			
-			""" % (post_id,post_id))
+			""" % (post_id,post_id,post_id))
 		self.renderOutput.append("<div id=\"gallery_%d\">\n" % post_id)
 		imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
 		for imagePost in imagePosts:
