@@ -119,17 +119,28 @@ class EditPost(webapp.RequestHandler):
 		
 class Post(webapp.RequestHandler):
 	def get(self):
-		self.response.out.write("I'm where you post stuff!")
 		self.response.out.write("""
 	      <html>
+			<head>
+			  <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection">
+			  <link rel="stylesheet" href="/css/print.css" type="text/css" media="print">
+			  <!--[if IE]><link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+			</head>
 	        <body>
+			<div class="container">  
+			  <div class="span-7 colborder last">This is where you post stuff!</div><hr/>
+			  <div class="span-6 last">
 	          <form action="/recieve" enctype="multipart/form-data"  method="post">
-				<div><textarea name="title" rows="1" cols = "60"></textarea></div>
-	            <div><textarea name="content" rows="3" cols="60"></textarea></div>
-				<div><input type="file" name="img"/></div>
-				<div>Publish <input type="checkbox" name="publish" value="1"></div>
-	            <div><input type="submit" value="Post To Blog"></div>
+				<div class="span-10">Post Title: <input name="title"></input></div>
+				
+	            <div class="span-6 last">Post Body: <textarea name="content" rows="3" cols="30"></textarea></div>
+				<hr class="space">
+				<div class="span-2">Publish <input type="checkbox" name="publish" value="1"></div>
+	            <div class="span-2 last"><input type="submit" value="Post To Blog"></div>
 	          </form>
+			  </div>
+			  </div>
+			</div>
 	        </body>
 	      </html>""")
 	    
