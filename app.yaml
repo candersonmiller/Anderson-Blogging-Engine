@@ -38,5 +38,9 @@ handlers:
   script: image.py
 - url: /postimage
   script: image.py
+- url: /sortimage.*
+  script: image.py
+- url: /updatedimages.*
+  script: image.py
 - url: /
   static_dir: assets

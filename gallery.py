@@ -89,7 +89,7 @@ class Gallery():
 									
 									$.ajax({
 									  type: "GET",
-									  url: "/sortimages/%d/" + thisElement + "/" + prevElement + "/" + nextElement ,
+									  url: "/sortimage/%d/" + thisElement + "/" + prevElement + "/" + nextElement ,
 									  dataType: "script"
 									});
 									
@@ -97,7 +97,7 @@ class Gallery():
 									// previousElement or nextElement are -1 if they don't exist
 									// to do: write a refresh into this specific div
 									// something like this
-									//$("#renderedContent").load("/rendered?post_id={{postNumber}}?gallery=1");
+									$("#gallery_%d").load("/updatedimages/%d");
 								}
 							});
 							$("#gallery_%d").disableSelection();
@@ -105,7 +105,7 @@ class Gallery():
 						});
 
 					</script>			
-			""" % (post_id,post_id,post_id))
+			""" % (post_id,post_id,post_id,post_id,post_id))
 		self.renderOutput.append("<div id=\"gallery_%d\">\n" % post_id)
 		imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
 		for imagePost in imagePosts:

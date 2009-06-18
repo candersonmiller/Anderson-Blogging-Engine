@@ -91,9 +91,101 @@ class PostImage(webapp.RequestHandler):
 			post.put()
 		self.redirect('/edit?post=%d' % post_id)
 
+
+class SortImage(webapp.RequestHandler):
+	def get(self,post,curr,prev,next):
+		post_id = int(post)
+		curr_id = int(curr)
+		prev_id = int(prev)
+		next_id = int(next)
+
+		
+
+
+		if(next_id >= 0 and prev_id >= 0): #assuming that we're not pushing it at the last, and not putting it in front of all others
+			self.response.out.write("assuming that we're not pushing it at the last, and not putting it in front of all others")
+			if(curr_id < prev_id):
+				self.response.out.write("lower things between curr and prev (inclusive of prev), replace prev with curr")
+				imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id DESC",post_id)
+				i = 0
+				numToReplace = 0
+				for ip in imagePosts:
+					if(ip.image_id < next_id and ip.image_id >= curr_id ):
+						if(i == 0):
+							numToReplace = ip.image_id
+						if(ip.image_id == curr_id):
+							ip.image_id = numToReplace
+							ip.put()
+						else:
+							ip.image_id = ip.image_id - 1
+							ip.put()
+						i += 1
+			if(curr_id > next_id):
+				self.response.out.write("raise things between next and curr (inclusive of next), replace next with curr")
+				imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
+				i = 0
+				numToReplace = 0
+				for ip in imagePosts:
+					if(ip.image_id >= next_id and ip.image_id <= curr_id ):
+						if(i == 0):
+							numToReplace = ip.image_id
+						if(ip.image_id == curr_id):
+							ip.image_id = numToReplace
+							ip.put()
+						else:
+							ip.image_id = ip.image_id + 1
+							ip.put()
+						i += 1
+					
+		elif(next_id >= 0):  # only a next, meaning that we're inserting at the beginning
+			self.response.out.write("only a next, meaning that we're inserting at the beginning")
+			imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
+			i = 0
+			for ip in imagePosts:
+				if(ip.image_id == curr_id):
+					ip.image_id = -1
+					ip.put()
+				if(ip.image_id >= next_id and ip.image_id < curr_id):
+					ip.image_id = ip.image_id + 1
+					ip.put()
+				i += 1
+			for ip in imagePosts:
+				if(ip.image_id == -1):
+					ip.image_id = 0
+					ip.put()
 			
+					
+		elif(prev_id >= 0): # only a previous, indicating that we're inserting at the end
+			self.response.out.write("only a previous, indicating that we're inserting at the end")
+			imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id DESC",post_id)
+			i = 0
+			highest = -1
+			for ip in imagePosts:
+				if(ip.image_id > highest):
+					highest = ip.image_id
+				if(ip.image_id == curr_id):
+					ip.image_id = -1
+					ip.put()
+				if(ip.image_id <= prev_id and ip.image_id > curr_id):
+					ip.image_id = ip.image_id - 1
+					ip.put()
+				i += 1
+			for ip in imagePosts:
+				if(ip.image_id == -1):
+					ip.image_id = highest
+					ip.put()		
+					
+class UpdatedImages(webapp.RequestHandler):
+	def get(self,post):
+		post_id = int(post)
+		imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
+		for imagePost in imagePosts:
+			self.response.out.write("<img id=\"%d\" src=\"/thumbnail?img_id=%s\"/>" %  (imagePost.image_id,imagePost.key()))
+		
+		
+					
 def main():
-	application = webapp.WSGIApplication([('/img', Image),('/fullimage',FullImageRender),('/thumbnail',ThumbnailRender),('/postimage',PostImage)],debug=True)
+	application = webapp.WSGIApplication([('/img', Image),('/fullimage',FullImageRender),('/thumbnail',ThumbnailRender),(r'/updatedimages/(.*)',UpdatedImages),('/postimage',PostImage),(r'/sortimage/(.*)/(.*)/(.*)/(.*)',SortImage)],debug=True)
 	run_wsgi_app(application)
 
 
