@@ -32,6 +32,8 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 
+
+
 class MainHandler(webapp.RequestHandler):
 	def get(self):
 		self.response.headers['Content-Type'] = 'text/html'
@@ -109,7 +111,8 @@ class EditPost(webapp.RequestHandler):
 				else:
 					published = ""
 					unpublished = "Not Published"
-				self.response.out.write(template.render('edit.html',{'published':published,'unpublished':unpublished,'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content ,'gallery_code' : galleryCode.render(), 'renderedcontent' : textile.textile(pos.content)}))
+				imageUrls = common.getImageURLs(pos.post_id)
+				self.response.out.write(template.render('edit.html',{'imageURLs':imageUrls,'published':published,'unpublished':unpublished,'postNumber' : pos.post_id, 'title' : pos.title, 'content' : pos.content ,'gallery_code' : galleryCode.render(), 'renderedcontent' : textile.textile(pos.content)}))
 
 		else:
 			posts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY post_id")

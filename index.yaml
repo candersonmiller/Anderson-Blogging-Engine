@@ -10,13 +10,13 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-# Used 337 times in query history.
+# Used 2 times in query history.
 - kind: ImagePost
   properties:
   - name: post_id
   - name: image_id
 
-# Used 41 times in query history.
+# Used once in query history.
 - kind: ImagePost
   properties:
   - name: post_id

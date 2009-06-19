@@ -121,7 +121,8 @@
 <body>
 	<div class="container"> 
 		<div class="span-16"><h1>Edit Post Number {{postNumber}}</h1></div><div class="span-6 colborder" onclick="unPublish();" id="published">{{published}}</div><div  onclick="publish();" class="span-6 colborder last" id="unpublished">{{unpublished}}</div>
-		<div class="span-12"><a href="/">Frontpage</a> | <a href="/edit">Edit All</a></div>
+		<div class="span-16"><a href="/">Frontpage</a> | <a href="/edit">Edit All</a></div>
+		<div class="span-6 colborder last" >Click above to Publish/Unpublish</div>
 		<hr class="space">
 		<strong>Entry Title</strong><br/>
 		<div class="span-6"><div class="title" id="title{{postNumber}}">{{title}}</div></div>
@@ -156,8 +157,12 @@
 			<div class="span-6"><ol><li>A first item</li><li>A second item</li><li>A third</li></ol><br/>
 			<a href="http://hobix.com/textile/quick.html">A better Textile guide link</a><br/>
 		</div>
-		
-
+		<hr class="space">
+		<div class="span-24 last">
+			<div class="span-10"><strong>Image URLs for particular placement in the post.</strong></div>
+			<hr>
+			{{imageURLs}}
+		</div>
 		<!--<button id="rendercontent">Render Textile Content</button> -->
 		<!--<hr class="space">-->
 		<!--<hr>

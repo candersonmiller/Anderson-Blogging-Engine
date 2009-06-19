@@ -72,7 +72,16 @@ def day(num):
 		6 : "Sun"
 	}
 	return days[num]
-
+	
+def getImageURLs(post_id):
+	imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
+	postHTML = list()
+	for imagePost in imagePosts:
+		postHTML.append("<div class=\"span-16\"><img id=\"%d\" src=\"/thumbnail?img_id=%s\"/><br/> <strong>thumbnail:</strong> /thumbnail?img_id=%s <br/> <strong>fullsize:</strong>	 /fullimage?img_id=%s </div>" %  (imagePost.image_id,imagePost.key(),imagePost.key(),imagePost.key()))
+	toReturn = ""
+	for html in postHTML:
+		toReturn += html
+	return toReturn
 
 class BlogPost(db.Model):
 	post_id = db.IntegerProperty()

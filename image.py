@@ -181,11 +181,15 @@ class UpdatedImages(webapp.RequestHandler):
 		imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
 		for imagePost in imagePosts:
 			self.response.out.write("<img id=\"%d\" src=\"/thumbnail?img_id=%s\"/>" %  (imagePost.image_id,imagePost.key()))
+			
+class ImageURLs(webapp.RequestHandler):
+	def get(self,post):
+		post_id = int(post)
+		imageURLCode = common.getImageURLs(post_id)
+		self.response.out.write(imageURLCode)
 		
-		
-					
 def main():
-	application = webapp.WSGIApplication([('/img', Image),('/fullimage',FullImageRender),('/thumbnail',ThumbnailRender),(r'/updatedimages/(.*)',UpdatedImages),('/postimage',PostImage),(r'/sortimage/(.*)/(.*)/(.*)/(.*)',SortImage)],debug=True)
+	application = webapp.WSGIApplication([('/img', Image),('/fullimage',FullImageRender),('/thumbnail',ThumbnailRender),(r'/updatedimages/(.*)',UpdatedImages),(r'/imageurls/(.*)',ImageURLs),('/postimage',PostImage),(r'/sortimage/(.*)/(.*)/(.*)/(.*)',SortImage)],debug=True)
 	run_wsgi_app(application)
 
 
