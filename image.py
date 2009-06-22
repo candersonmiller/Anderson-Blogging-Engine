@@ -75,6 +75,7 @@ class PostImage(webapp.RequestHandler):
 
 		image = self.request.get("img")
 		thumbnail = images.resize(image,100)
+		middlesize = images.resize(image,200)
 		
 		post_id = int(self.request.get("post_id"))
 	
@@ -88,6 +89,7 @@ class PostImage(webapp.RequestHandler):
 			post.image_id = image_id
 			post.image = db.Blob(image)
 			post.thumbnail = db.Blob(thumbnail)
+			post.middlesize = db.Blob(middlesize)
 			post.put()
 		self.redirect('/edit?post=%d' % post_id)
 
@@ -188,8 +190,55 @@ class ImageURLs(webapp.RequestHandler):
 		imageURLCode = common.getImageURLs(post_id)
 		self.response.out.write(imageURLCode)
 		
+class PhonePost(webapp.RequestHandler):
+	def post(self):
+		post = common.ImagePost()
+		image = self.request.get("img")
+		thumbnail = images.resize(image,100)
+		middlesize = images.resize(image,200)
+		post_id = -1
+		posts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY post_id DESC LIMIT 1")
+		for po in posts:
+			post_id = po.post_id + 1
+		image_id = findImageIdNumber(post_id)
+		image = self.request.get("img")
+		if(image):
+			post.post_id = post_id
+			post.image_id = image_id
+			post.image = db.Blob(image)
+			post.thumbnail = db.Blob(thumbnail)
+			post.middlesize = db.Blob(middlesize)
+			post.put()
+			
+			blogpost = common.BlogPost()
+			blogpost.post_id = post_id
+			
+			titleFromPost = self.request.get("title")
+			if(titleFromPost):
+				blogpost.title = titleFromPost
+			else:
+				blogpost.title = "mobile picture"
+			
+			blogpost.content = "this was uploaded from my phone<br/><br/><img src=\"/fullimage?img_id=%s\">" % post.key()
+			if(str(self.request.get("published"))  == "Yes"  ):
+				blogpost.published = True
+			else:
+				blogpost.published = False
+			blogpost.put()
+
+		
+		
+		
 def main():
-	application = webapp.WSGIApplication([('/img', Image),('/fullimage',FullImageRender),('/thumbnail',ThumbnailRender),(r'/updatedimages/(.*)',UpdatedImages),(r'/imageurls/(.*)',ImageURLs),('/postimage',PostImage),(r'/sortimage/(.*)/(.*)/(.*)/(.*)',SortImage)],debug=True)
+	application = webapp.WSGIApplication([('/img', Image),
+										('/fullimage',FullImageRender),
+										('/thumbnail',ThumbnailRender),
+										(r'/updatedimages/(.*)',UpdatedImages),
+										(r'/imageurls/(.*)',ImageURLs),
+										('/phonepost',PhonePost),
+										('/postimage',PostImage),
+										(r'/sortimage/(.*)/(.*)/(.*)/(.*)',SortImage)
+										],debug=True)
 	run_wsgi_app(application)
 
 

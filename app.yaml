@@ -42,5 +42,7 @@ handlers:
   script: image.py
 - url: /updatedimages.*
   script: image.py
+- url: /phonepost
+  script: image.py
 - url: /
   static_dir: assets

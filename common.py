@@ -96,6 +96,7 @@ class ImagePost(db.Model):
 	image_id = db.IntegerProperty()
 	image = db.BlobProperty()
 	thumbnail = db.BlobProperty()
+	middlesize = db.BlobProperty()
 	published = db.BooleanProperty(default=True)
 	title = db.StringProperty(default="Image")
 	
@@ -105,5 +106,6 @@ class SiteSettings(db.Model):
 	siteHome = db.StringProperty()
 	author = db.StringProperty()
 	
+
 
 

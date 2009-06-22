@@ -101,10 +101,23 @@ class Gallery():
 								}
 							});
 							$("#gallery_%d").disableSelection();
+							
+							//$("img").hover(
+						    //  function () {
+						        //$(this).append($("<span><img src='/images/x.png'/></span>"));
+							//	$(this).append($("<span> ***</span>"));
+								//console.log("hi there");
+						    //  }, 
+						    //  function () {
+								//console.log("hover ended");
+						 //       $(this).find("span:last").remove();
+						   //   }
+						   // );
 
 						});
 
-					</script>			
+					</script>	
+							
 			""" % (post_id,post_id,post_id,post_id,post_id))
 		self.renderOutput.append("<div id=\"gallery_%d\">\n" % post_id)
 		imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
