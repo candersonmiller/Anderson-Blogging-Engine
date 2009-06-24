@@ -8,18 +8,21 @@ handlers:
   script: main.py
 - url: /post
   script: main.py
+  login: admin
 - url: /recieve
   script: main.py
 - url: /img
   script: image.py
 - url: /edit
   script: main.py
+  login: admin
 - url: /recieveedit
   script: main.py
 - url: /rss
   script: rss.py
 - url: /settings
   script: settings.py
+  login: admin
 - url: /settingssubmit
   script: settings.py
 - url: /postedit

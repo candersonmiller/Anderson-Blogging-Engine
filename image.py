@@ -219,7 +219,7 @@ class PhonePost(webapp.RequestHandler):
 			else:
 				blogpost.title = "mobile picture"
 			
-			blogpost.content = "this was uploaded from my phone<br/><br/><img src=\"/fullimage?img_id=%s\">" % post.key()
+			blogpost.content = "<br/><img src=\"/fullimage?img_id=%s\">" % post.key()
 			if(str(self.request.get("published"))  == "Yes"  ):
 				blogpost.published = True
 			else:
