@@ -26,10 +26,12 @@
 			<hr class="space"/>
 				<div class="span-24 last"><h1>{{title}}</h1></div>
 				<div class="span-24 last"><h3>{{tagline}}</h3></div>
-				<div style="text-align : right;" class="span-24 colborder"><h2><a href="/history/1">Previous 5</a></h2></div>
+				<div style="text-align : left;" class="span-12"><h2><a href="/history/{{next_number}}">Next 5</a></h2></div>
+				<div style="text-align : right;" class="span-12 last"><h2><a href="/history/{{previous_number}}">Previous 5</a></h2></div>
 				<hr/>
 				{{postbody}}
-				<div style="text-align : right;" class="span-24 colborder"><h2><a href="/history/1">Previous 5</a></h2></div>
+				<div style="text-align : left;" class="span-12"><h2><a href="/history/{{next_number}}">Next 5</a></h2></div>
+				<div style="text-align : right;" class="span-12 last"><h2><a href="/history/{{previous_number}}">Previous 5</a></h2></div>
 				<hr/>
 				<div class="span-6 colborder"><a href="http://github.com/candersonmiller/Anderson-Blogging-Engine/tree/master"><img src="/images/andersonblogginglogo.png"/></a></div>
 	</div>

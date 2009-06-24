@@ -47,5 +47,7 @@ handlers:
   script: image.py
 - url: /phonepost
   script: image.py
+- url: /history.*
+  script: history.py
 - url: /
   static_dir: assets

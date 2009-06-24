@@ -119,7 +119,7 @@ class Gallery():
 					</script>	
 							
 			""" % (post_id,post_id,post_id,post_id,post_id))
-		self.renderOutput.append("<div id=\"gallery_%d\">\n" % post_id)
+		self.renderOutput.append("<div style=\"display: none;\" id=\"gallery_%d\">\n" % post_id)   # setting gallery to hidden
 		imagePosts = db.GqlQuery("SELECT * FROM ImagePost WHERE post_id=:1 ORDER BY image_id ASC",post_id)
 		for imagePost in imagePosts:
 			if(forEditing):

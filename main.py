@@ -62,10 +62,12 @@ class MainHandler(webapp.RequestHandler):
 		#blogtitle = "Anderson Miller's Blog"
 		#tagline = "I wrote this blog myself.  The Blog, not just the content."
 		i = 0
+		onFrontPage = 0
 		blogposts = ""
 		for post in posts:
 			i = i + 1
-			if(post.published):
+			if(post.published and (onFrontPage < 5)):
+				onFrontPage = onFrontPage + 1
 				title = post.title
 				postdate = common.feedFormattedDate(post.date)
 				postdate += " <strong>%s</strong> wrote:" % author
