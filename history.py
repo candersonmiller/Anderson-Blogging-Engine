@@ -65,13 +65,14 @@ class History(webapp.RequestHandler):
 
 
 		i = 0
+		j = 0
 		onFrontPage = 0
 		blogposts = ""
 		next_number = int(pageNumber) - 1
 		previous_number = int(pageNumber) + 1
 		for post in posts:
 			i = i + 1
-			if( i > (int(pageNumber) * 5) and post.published and (onFrontPage < 5)):
+			if( j > (int(pageNumber) * 5) and post.published and (onFrontPage < 5)):
 				onFrontPage = onFrontPage + 1
 				title = post.title
 				postdate = common.feedFormattedDate(post.date)
@@ -91,7 +92,9 @@ class History(webapp.RequestHandler):
 				}
 				blogposts += template.render('newpost.html',template_values)
 		
-		
+			if(post.published):
+				j = j + 1
+				
 		template_values = {
 			'title': blogtitle,
 			'tagline':tagline, 
